@@ -20,6 +20,7 @@ public class ChatController {
         chatListResponse.set(this.chatRepository.findAll());
         return ResponseEntity.ok(chatListResponse);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response<?>> getChatById(@PathVariable int id) {
         Chat chat = this.chatRepository.findById(id).orElse(null);
