@@ -1,5 +1,6 @@
 package com.booleanuk.controller;
 
+import com.booleanuk.DTO.UserResponseDTO;
 import com.booleanuk.model.User;
 import com.booleanuk.repository.ChatRepository;
 import com.booleanuk.repository.UserRepository;
@@ -29,16 +30,23 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<?>> getUserById(@PathVariable int id) {
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
         User user = this.getUser(id);
-        if (user == null){
+        if (user == null) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.set("No User with that Id");
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
-        UserResponse userResponse = new UserResponse();
-        userResponse.set(user);
-        return ResponseEntity.ok(userResponse);
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getChatIds()
+        );
+
+        // Directly return the UserResponseDTO wrapped in a ResponseEntity
+        return ResponseEntity.ok(userResponseDTO);
     }
 
     @PostMapping
@@ -51,10 +59,11 @@ public class UserController {
             errorResponse.set("Could not create User");
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
-        UserResponse userResponse = new UserResponse();
+        com.booleanuk.response.UserResponse userResponse = new com.booleanuk.response.UserResponse();
         userResponse.set(newUser);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
+
 
     private User getUser(int id){
         return this.userRepository.findById(id)
