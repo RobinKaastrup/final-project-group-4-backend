@@ -74,4 +74,62 @@ public class MessageController {
         messageResponse.set(this.messageRepository.save(newMessage));
         return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
+    @PutMapping("chats/{chatID}/users/{userID}/messages/{messageID}")
+    public ResponseEntity<Response<?>> updateMessage(@PathVariable int chatID, @PathVariable int userID, @PathVariable int messageID, @RequestBody Message message){
+        Chat chat = this.chatRepository.findById(chatID).orElse(null);
+        if (chat == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No chat with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        User user = this.userRepository.findById(userID).orElse(null);
+        if (user == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No user with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        Message message1 = this.messageRepository.findById(messageID).orElse(null);
+        if (message1 == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No message with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        } try {
+            message1.setUpdatedAt(ZonedDateTime.now());
+            message1.setContent(message.getContent());
+            this.messageRepository.save(message1);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("Could not update message, please check all fields");
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.set(message1);
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("chats/{chatID}/users/{userID}/messages/{messageID}")
+    public ResponseEntity<Response<?>> deleteMessage(@PathVariable int chatID, @PathVariable int userID, @PathVariable int messageID){
+        Chat chat = this.chatRepository.findById(chatID).orElse(null);
+        if (chat == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No chat with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        User user = this.userRepository.findById(userID).orElse(null);
+        if (user == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No user with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        Message message1 = this.messageRepository.findById(messageID).orElse(null);
+        if (message1 == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No message with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        this.messageRepository.delete(message1);
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.set(message1);
+        return ResponseEntity.ok(messageResponse);
+    }
 }
