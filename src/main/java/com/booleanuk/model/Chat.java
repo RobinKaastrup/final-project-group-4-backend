@@ -22,7 +22,7 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
-    private String content;
+    private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     private ZonedDateTime createdAt = ZonedDateTime.now();
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
