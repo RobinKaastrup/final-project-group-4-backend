@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateChatRequest {
 
-    // Class to handle new chats
     private String content;
     private List<Integer> userIds;
 
