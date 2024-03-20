@@ -70,6 +70,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/chats", "/chats/**").authenticated()
                         .requestMatchers("/messages", "/messages/**").authenticated()
                         .requestMatchers("/users", "/users/**").authenticated()
+                        .requestMatchers("/relations", "/relations/**").authenticated()
                 );
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
