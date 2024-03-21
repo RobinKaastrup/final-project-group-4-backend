@@ -91,24 +91,27 @@ public class ChatController {
         chatResponse.set(chat1);
         return new ResponseEntity<>(chatResponse, HttpStatus.CREATED);
     }
+
+    // Endpoint to delete a chat by its ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<?>> deleteChat(@PathVariable int id) {
-        Chat chat1 = this.getChat(id);
-        if (chat1 == null) {
+        Chat chat = this.getChat(id);
+        if (chat == null){
             ErrorResponse error = new ErrorResponse();
             error.set("No chat with that id found.");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
-        if (!chat1.getMessages().isEmpty()) {
-            for (Message message : chat1.getMessages()) {
+        if (!chat.getMessages().isEmpty()){
+            for (Message message : chat.getMessages()){
                 this.messageRepository.delete(message);
             }
         }
-        this.chatRepository.delete(chat1);
+        this.chatRepository.delete(chat);
         ChatResponse chatResponse = new ChatResponse();
-        chatResponse.set(chat1);
+        chatResponse.set(chat);
         return ResponseEntity.ok(chatResponse);
     }
+
 
     private Chat getChat(int id){
         return this.chatRepository.findById(id)
