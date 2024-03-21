@@ -2,10 +2,10 @@
 INSERT INTO roles (name) VALUES ('ROLE_USER'), ('ROLE_MODERATOR'), ('ROLE_ADMIN');
 
 -- Insert users
-INSERT INTO users (username, email, password) VALUES
-('user1', 'user1@example.com', '$2a$10$dZ2jrNd7j1hFq76gZaeRA.L4e3Jllud21ND/wUm4UaISa/bPc02AC'), --password1
-('user2', 'user2@example.com', '$2a$10$1E1OgIO6u.eSGSI1qpS1n.EMOESzcjbnCWuLw02KXap0zYIPzy5bC'),--password2
-('user3', 'user3@example.com', '$2a$10$6gxxTWcpxWQclZUIY1UrYuMnq0ehksQ.N5kDE2eJp0PBzSJziMv.y'); --password3
+INSERT INTO users (username, email, password, profileimage) VALUES
+('user1', 'user1@example.com', '$2a$10$dZ2jrNd7j1hFq76gZaeRA.L4e3Jllud21ND/wUm4UaISa/bPc02AC', 'https://www.gravatar.com/avatar/user1@example.com?s=120&d=identicon'), --password1
+('user2', 'user2@example.com', '$2a$10$1E1OgIO6u.eSGSI1qpS1n.EMOESzcjbnCWuLw02KXap0zYIPzy5bC', 'https://www.gravatar.com/avatar/user2@example.com?s=120&d=identicon'),--password2
+('user3', 'user3@example.com', '$2a$10$6gxxTWcpxWQclZUIY1UrYuMnq0ehksQ.N5kDE2eJp0PBzSJziMv.y', 'https://www.gravatar.com/avatar/user3@example.com?s=120&d=identicon'); --password3
 
 -- Assign roles to users
 INSERT INTO user_roles (user_id, role_id) VALUES
