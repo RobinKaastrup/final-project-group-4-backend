@@ -45,6 +45,33 @@ public class MessageController {
         messageListResponse.set(messages);
         return ResponseEntity.ok(messageListResponse);
     }
+
+    @GetMapping("chats/{chatID}/users/{userID}")
+    public ResponseEntity<Response<?>> getMessagesForUser(@PathVariable int chatID, @PathVariable int userID){
+        Chat chat = this.chatRepository.findById(chatID).orElse(null);
+        if (chat == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No chat with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        User user = this.userRepository.findById(userID).orElse(null);
+        if (user == null) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No user with that ID");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        // Fetch messages by chat ID and user ID
+        List<Message> messages = this.messageRepository.findByChatIdAndUserId(chatID, userID);
+        if (messages.isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.set("No messages in this chat for the given user");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+        MessageListResponse messageListResponse = new MessageListResponse();
+        messageListResponse.set(messages);
+        return ResponseEntity.ok(messageListResponse);
+    }
+
     @PostMapping("chats/{chatID}/users/{userID}")
     public ResponseEntity<Response<?>> addMessage(@PathVariable int chatID, @PathVariable int userID, @RequestBody Message message){
         Chat chat = this.chatRepository.findById(chatID).orElse(null);
