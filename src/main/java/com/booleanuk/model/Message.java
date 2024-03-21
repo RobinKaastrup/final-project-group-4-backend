@@ -32,12 +32,12 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "chat_id", nullable = false)
-    @JsonIncludeProperties(value = {"chat_id"})
+    @JsonIncludeProperties(value = {"id"})
     private Chat chat;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIncludeProperties(value = {"user_id"})
+    @JsonIncludeProperties(value = {"id"})
     private User user;
 
 }
