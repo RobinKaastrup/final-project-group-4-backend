@@ -54,6 +54,7 @@ public class UserController {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getProfileimage(),
                 user.getChatIds(),
                 roleNames
         );
@@ -72,6 +73,7 @@ public class UserController {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getProfileimage(),
                 user.getChatIds(),
                 roleNames
         );
