@@ -34,7 +34,7 @@ public class Chat {
             joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    @JsonIncludeProperties(value = "user_id")
+    @JsonIncludeProperties(value = "id")
     private List<User> users;
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
