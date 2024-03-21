@@ -24,7 +24,7 @@ INSERT INTO messages (content, created_at, updated_at, chat_id, user_id) VALUES
 ('Message 4', NOW(), NOW(), 2, 2);
 
 -- Insert user relations
-INSERT INTO relations (user_id, friend_id) VALUES
+INSERT INTO user_relations (user_id, friend_id) VALUES
 (1, 2), -- user1 is friends with user2
 (1, 3), -- user1 is friends with user3
 (2, 3); -- user2 is friends with user3
