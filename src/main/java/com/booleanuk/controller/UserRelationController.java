@@ -58,4 +58,19 @@ public class UserRelationController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Endpoint to delete a user relation by user id and friend id
+    @DeleteMapping("/delete/{userId}/{friendId}")
+    public ResponseEntity<String> deleteUserRelationByUserIdAndFriendId(@PathVariable int userId, @PathVariable int friendId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with ID " + userId + " not found"));
+        User friend = userRepository.findById(friendId)
+                .orElseThrow(() -> new RuntimeException("User with ID " + friendId + " not found"));
+
+        UserRelation userRelation = userRelationRepository.findByUserAndFriend(user, friend)
+                .orElseThrow(() -> new RuntimeException("User relation not found"));
+
+        userRelationRepository.delete(userRelation);
+        return ResponseEntity.ok("User relation between user with ID " + userId + " and friend with ID " + friendId + " deleted successfully.");
+    }
 }
