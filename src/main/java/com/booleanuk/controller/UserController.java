@@ -14,6 +14,7 @@ import com.booleanuk.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -58,6 +59,24 @@ public class UserController {
         );
         return ResponseEntity.ok(userResponseDTO);
     }
+    @GetMapping("/username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        User user = this.userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with username " + username));
+        Set<String> roleNames = user.getRoles().stream()
+                .map(role -> role.getName())
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getChatIds(),
+                roleNames
+        );
+        return ResponseEntity.ok(userResponseDTO);
+    }
 
     @PostMapping
     public ResponseEntity<Response<?>> createUser(@RequestBody User user) {
@@ -83,7 +102,7 @@ public class UserController {
         } try {
             user1.setUsername(user.getUsername());
             user1.setEmail(user.getEmail());
-            user1.setPassword(user.getPassword());
+ //           user1.setPassword(user.getPassword());
 //            user1.setRoles(user.getRoles());
 //            user1.setChats(user.getChats());
             this.userRepository.save(user1);
